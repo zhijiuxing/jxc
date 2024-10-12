@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>员工</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!--tou-->
+<div th:replace="~{commons/commons::topbar}"></div>
+<div class="container-fluid">
+    <div class="row">
+<!--che-->
+        <div th:replace="~{commons/commons::sidebar(active='list.html')}"></div>
+
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2> 员工信息</h2>
+            <h4><a class="btn btn-sm btn-success" th:href="@{/emp}">添加员工</a></h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>lastName</th>
+                        <th>email</th>
+                        <th>
+                            <select style="border: 0; display: block; position: relative;" onchange="SelectGender()" id="Gender">
+                                <option value = "2">gender</option>
+                                <option value = "1">男</option>
+                                <option value = "0">女</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select style="border: 0; display: block; position: relative;" onchange="SelectGender()" id="department">
+                                <option value = "2">department</option>
+                                <option th:each="dept:${departments}" th:text="${dept.getDepartmentName()}"  th:value="${dept.getId()}"></option>
+                            </select>
+                        </th>
+                        <th>birth</th>
+                        <th>   操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="emp:${emls}">
+                            <td th:text="${emp.getId()}"></td>
+                            <td th:text="${emp.getLastName()}"></td>
+                            <td th:text="${emp.getEmail()}"></td>
+                            <td th:text="${emp.getGender()==0?'女':'男'}"></td>
+                            <td th:text="${emp.getDepartment().getDepartmentName()}"></td>
+                            <td th:text="${#dates.format(emp.getBirth(),'yyyy-MM-dd HH-mm-ss')}"></td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" th:href="@{/emp/}+${emp.getId()}">编辑</a>
+                                <a class="btn btn-sm btn-danger" th:href="@{/delemp/}+${emp.getId()}">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery-3.6.0.js" ></script>
+<script type="text/javascript">
+
+    function SelectGender(){
+        $('table tbody tr').hide()
+            .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+            .filter(":contains('" + ($('#department option:selected').text()) + "')")
+            .show();
+
+
+        if ($('#Gender option:selected').text()=='gender'){
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                .show();
+        }
+        if ($('#department option:selected').text()=='department'){
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+                .show();
+        }
+        if ($('#Gender option:selected').text()=='gender'&$('#department option:selected').text()=='department'){
+            $('table tbody tr').show();
+        }
+    }
+    /*function SelectGender(){
+        var GenderId=document.getElementById("Gender").value;
+        var departmentId=document.getElementById("department").value;
+        // $('table tbody tr').hide()
+        //     .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+        //     .show();
+        // if($('#gender option:selected').text()=='gender'){
+        //     $('table tbody tr').show();
+        // }
+
+
+        if (GenderId!=2 && departmentId==2){
+
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+                .show();
+            if($('#gender option:selected').text()=='gender'){
+                $('table tbody tr').show();
+            }
+
+        }else if (GenderId==2 && departmentId!=2){
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                .show();
+            if($('#gender option:selected').text()=='gender'){
+                $('table tbody tr').show();
+            }
+        }else{
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+                .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                .show();
+
+            if($('#Gender option:selected').text()=='gender'){
+                $('table tbody tr').show();
+                if($('#department option:selected').text()!='department'){
+                    $('table tbody tr').hide()
+                        .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                }
+            }
+        }
+
+    }
+    function diao(){
+
+    }
+
+    function DepartmentSelect(){
+        var GenderId=document.getElementById("Gender").value;
+        var departmentId=document.getElementById("department").value;
+        if (GenderId==2 && departmentId!=2){
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                .show();
+            if($('#department option:selected').text()=='department'){
+                $('table tbody tr').show();
+            }
+        }else if(GenderId!=2 && departmentId==2){
+            if($('#department option:selected').text()=='department'){
+                $('table tbody tr').show();
+            }
+            $('table tbody tr').hide()
+                .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+                .show();
+
+            console.log("===========")
+        }else {
+            $('table tbody r').hide()
+                .filter(":contains('" + ($('#department option:selected').text()) + "')")
+                .filter(":contains('" + ($('#Gender option:selected').text()) + "')")
+                .show();
+            if($('#department option:selected').text()=='department'){
+                $('table tbody tr').show();
+                if($('#Gender option:selected').text()!='gender'){
+                    $('table tbody tr').hide()
+                        .filter(":contains('" + ($('#gender option:selected').text()) + "')")
+                }
+            }
+        }
+
+        //diao();
+    }*/
+
+</script>
+<script type="text/javascript">
+    $(function (){
+        $('#search').bind('keypress',function (event){
+            if (event.keyCode==13){
+                var xhr=new XMLHttpRequest();
+                var value1=document.getElementById("search").value;
+                if (value1=="首页"){
+                    window.location.href="http://localhost:8080/main.html";
+                }else if (value1=="订单"){
+                    window.location.href="http://localhost:8080/orders";
+                }else if (value1=="商品管理"){
+                    window.location.href="http://localhost:8080/commodity";
+                }else if (value1=="员工管理"){
+                    window.location.href="http://localhost:8080/emps";
+                }else if (value1=="报告"){
+                    window.location.href="http://localhost:8080/AllReports";
+                }else if (value1=="整合"){
+                    window.location.href="http://localhost:8080/IntegrationPage";
+                }else if (value1=="当月"){
+                    window.location.href="http://localhost:8080/month";
+                }else if (value1=="上季度"){
+                    window.location.href="http://localhost:8080/quarter";
+                }else if (value1=="社会参与"){
+                    window.location.href="http://localhost:8080/Sociology";
+                }else if (value1=="活动"){
+                    window.location.href="http://localhost:8080/activity";
+                }
+            }
+        })
+    });
+</script>
+</body>
+
+</html>

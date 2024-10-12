@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxx.mapper.CommodityMapper">
+<!--List<Commodity> SelectCommodity();-->
+    <select id="SelectCommodity" resultType="Commodity">
+        select id,tradename,price,sell,birth,stock from commodity
+    </select>
+<!-- int addCommodity(Commodity commodity); -->
+    <insert id="addCommodity" parameterType="Commodity">
+        insert into commodity(id,tradename,price,sell,birth,stock) values
+            (null,#{tradename},#{price},#{sell},#{birth},#{stock})
+    </insert>
+<!--    int updateCommodity(Commodity commodity); -->
+    <update id="updateCommodity" parameterType="Commodity">
+        update commodity
+        set tradename=#{tradename},price=#{price},sell=#{sell},birth=#{birth},stock=#{stock}
+        where id = #{id}
+    </update>
+<!--    Commodity SelectCommodityId(int id); -->
+    <select id="SelectCommodityId" resultType="Commodity">
+        select id,tradename,price,sell,birth,stock from commodity where id=#{id}
+    </select>
+<!--    int deleteCommodityId(int id);-->
+    <delete id="deleteCommodityId">
+        delete from commodity where id=#{id}
+    </delete>
+<!--    List<Commodity> shelvesY();-->
+    <select id="shelvesY" resultType="Commodity">
+        select id,tradename,price,sell,birth,stock from commodity where sell=0
+    </select>
+<!--    List<Commodity> shelvesN();-->
+    <select id="shelvesN" resultType="Commodity">
+        select id,tradename,price,sell,birth,stock from commodity where sell=1
+    </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxx.mapper.ReportMapper">
+    <!--List<Report> ReportSelect();-->
+    <select id="ReportSelect" resultMap="ReportEmployee">
+        select id,name,txt,reporttime,classification,reportemployee_id from report order by reporttime desc;
+    </select>
+    <resultMap id="ReportEmployee" type="Report">
+        <association property="employee" column="reportemployee_id" javaType="Employee"  select="getEmployee"/>
+    </resultMap>
+    <select id="getEmployee" resultType="Employee">
+        select id,lastName,email,gender,birth from employee where id=#{id}
+    </select>
+
+    <!--    int ReportAdd(Report report);-->
+    <insert id="ReportAdd" parameterType="Report">
+        insert into report(name,txt,reporttime,classification) values
+        (#{name},#{txt},#{reporttime},#{classification})
+    </insert>
+
+    <!--    List<Report> ReportSelectMonth();-->
+    <select id="ReportSelectMonth" resultMap="ReportEmployeeMonth">
+        select id,name,txt,reporttime,classification,reportemployee_id from report where date_format(reporttime, '%Y%m' ) = date_format( curdate() , '%Y%m' ) order by reporttime desc;
+    </select>
+    <resultMap id="ReportEmployeeMonth" type="Report">
+        <association property="employee" column="reportemployee_id" javaType="Employee"  select="getEmployeeMonth"/>
+    </resultMap>
+    <select id="getEmployeeMonth" resultType="Employee">
+        select id,lastName,email,gender,birth from employee where id=#{id}
+    </select>
+    <!--    List<Report> ReportSelectQuarter();-->
+    <select id="ReportSelectQuarter" resultMap="ReportEmployeeQuarter">
+        select id,name,txt,reporttime,classification,reportemployee_id from report where quarter(reporttime)=quarter(date_sub(now(),interval 1 quarter)) order by reporttime desc;
+    </select>
+    <resultMap id="ReportEmployeeQuarter" type="Report">
+        <association property="employee" column="reportemployee_id" javaType="Employee"  select="getEmployeeQuarter"/>
+    </resultMap>
+    <select id="getEmployeeQuarter" resultType="Employee">
+        select id,lastName,email,gender,birth from employee where id=#{id}
+    </select>
+    <!--List<Report> ReportSelectSociology();-->
+    <select id="ReportSelectSociology" resultMap="ReportEmployeeSociology">
+        select id,name,txt,reporttime,classification,reportemployee_id from report where classification=1  order by reporttime desc;
+    </select>
+    <resultMap id="ReportEmployeeSociology" type="Report">
+        <association property="employee" column="reportemployee_id" javaType="Employee"  select="getEmployeeSociology"/>
+    </resultMap>
+    <select id="getEmployeeSociology" resultType="Employee">
+        select id,lastName,email,gender,birth from employee where id=#{id}
+    </select>
+    <!--List<Report> ReportSelectActivity();-->
+    <select id="ReportSelectActivity" resultMap="ReportEmployeeActivity">
+        select id,name,txt,reporttime,classification,reportemployee_id from report where classification=2  order by reporttime desc;
+    </select>
+    <resultMap id="ReportEmployeeActivity" type="Report">
+        <association property="employee" column="reportemployee_id" javaType="Employee"  select="getEmployeeActivity"/>
+    </resultMap>
+    <select id="getEmployeeActivity" resultType="Employee">
+        select id,lastName,email,gender,birth from employee where id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>首页</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link th:href="@{/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+<!--tou-->
+	<div th:replace="~{commons/commons::topbar}"></div>
+
+
+
+		<div class="container-fluid">
+			<div class="row">
+<!--				ce-->
+					<div th:replace="~{commons/commons::sidebar(active='main.html')}"></div>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+<!--					<div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">-->
+<!--						<div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">-->
+<!--							<div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>-->
+<!--						</div>-->
+<!--						<div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">-->
+<!--							<div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>-->
+<!--						</div>-->
+<!--					</div>-->
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+						<h1 class="h2">近七周营业情况营业情况</h1>
+<!--						<div class="btn-toolbar mb-2 mb-md-0">-->
+<!--							<div class="btn-group mr-2">-->
+<!--								<button class="btn btn-sm btn-outline-secondary">Share</button>-->
+<!--								<button class="btn btn-sm btn-outline-secondary">Export</button>-->
+<!--							</div>-->
+<!--							<button class="btn btn-sm btn-outline-secondary dropdown-toggle">-->
+<!--                <svg xmlns="" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>-->
+<!--                This week-->
+<!--              </button>-->
+<!--						</div>-->
+					</div>
+
+					<div>
+						<!--		前七周的营业额	隐藏域			-->
+						<input type="hidden" th:value="${SevenMoney[0]}" id="one">
+						<input type="hidden" th:value="${SevenMoney[1]}" id="two">
+						<input type="hidden" th:value="${SevenMoney[2]}" id="three">
+						<input type="hidden" th:value="${SevenMoney[3]}" id="four">
+						<input type="hidden" th:value="${SevenMoney[4]}" id="five">
+						<input type="hidden" th:value="${SevenMoney[5]}" id="six">
+						<input type="hidden" th:value="${SevenMoney[6]}" id="seven">
+					</div>
+					<div>
+						<!--		14个时间段	隐藏域			-->
+						<input type="hidden" th:value="${TimeSlot[0]}" id="TimeSlot1">
+						<input type="hidden" th:value="${TimeSlot[1]}" id="TimeSlot2">
+						<input type="hidden" th:value="${TimeSlot[2]}" id="TimeSlot3">
+						<input type="hidden" th:value="${TimeSlot[3]}" id="TimeSlot4">
+						<input type="hidden" th:value="${TimeSlot[4]}" id="TimeSlot5">
+						<input type="hidden" th:value="${TimeSlot[5]}" id="TimeSlot6">
+						<input type="hidden" th:value="${TimeSlot[6]}" id="TimeSlot7">
+						<input type="hidden" th:value="${TimeSlot[7]}" id="TimeSlot8">
+						<input type="hidden" th:value="${TimeSlot[8]}" id="TimeSlot9">
+						<input type="hidden" th:value="${TimeSlot[9]}" id="TimeSlot10">
+						<input type="hidden" th:value="${TimeSlot[10]}" id="TimeSlot11">
+						<input type="hidden" th:value="${TimeSlot[11]}" id="TimeSlot12">
+						<input type="hidden" th:value="${TimeSlot[12]}" id="TimeSlot13">
+						<input type="hidden" th:value="${TimeSlot[13]}" id="TimeSlot14">
+					</div>
+
+
+					<canvas class="my-4 chartjs-render-monitor" id="myChart" width="1076" height="454" style="display: block; width: 1076px; height: 454px;"></canvas>
+
+				</main>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js" ></script>
+		<script type="text/javascript" src="../js/popper.min.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js" ></script>
+		<script type="text/javascript" src="../js/feather.min.js" ></script>
+		<script type="text/javascript" src="../js/layui.js" ></script>
+
+		<script>
+			feather.replace()
+		</script>
+		<!-- Graphs -->
+		<script type="text/javascript" src="../js/Chart.min.js" ></script>
+		<script>
+		<!--			获取前七周的营业额-->
+		var one1=document.getElementById("one").value;
+		var two=document.getElementById("two").value;
+		var three1=document.getElementById("three").value;
+		var four=document.getElementById("four").value;
+		var five=document.getElementById("five").value;
+		var six=document.getElementById("six").value;
+		var seven=document.getElementById("seven").value;
+		<!--			获取14个时间段-->
+		var TimeSlot1=document.getElementById("TimeSlot1").value;
+		var TimeSlot2=document.getElementById("TimeSlot2").value;
+		var TimeSlot3=document.getElementById("TimeSlot3").value;
+		var TimeSlot4=document.getElementById("TimeSlot4").value;
+		var TimeSlot5=document.getElementById("TimeSlot5").value;
+		var TimeSlot6=document.getElementById("TimeSlot6").value;
+		var TimeSlot7=document.getElementById("TimeSlot7").value;
+		var TimeSlot8=document.getElementById("TimeSlot8").value;
+		var TimeSlot9=document.getElementById("TimeSlot9").value;
+		var TimeSlot10=document.getElementById("TimeSlot10").value;
+		var TimeSlot11=document.getElementById("TimeSlot11").value;
+		var TimeSlot12=document.getElementById("TimeSlot12").value;
+		var TimeSlot13=document.getElementById("TimeSlot13").value;
+		var TimeSlot14=document.getElementById("TimeSlot14").value;
+
+
+
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: [TimeSlot14+"~~"+TimeSlot12, TimeSlot12+"~~"+TimeSlot11, TimeSlot10+"~~"+TimeSlot9, TimeSlot8+"~~"+TimeSlot7, TimeSlot6+"~~"+TimeSlot5, TimeSlot4+"~~"+TimeSlot3, TimeSlot2+"~~"+TimeSlot1],
+					datasets: [{
+						data: [seven, six, five, four, three1, two, one1],
+						lineTension: 0,
+						backgroundColor: 'transparent',
+						borderColor: '#007bff',
+						borderWidth: 4,
+						pointBackgroundColor: '#007bff'
+					}]
+				},
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: false
+							}
+						}]
+					},
+					legend: {
+						display: false,
+					}
+				}
+			});
+		</script>
+<script type="text/javascript">
+	$(function (){
+		$('#search').bind('keypress',function (event){
+			if (event.keyCode==13){
+					var xhr=new XMLHttpRequest();
+					var value1=document.getElementById("search").value;
+				if (value1=="首页"){
+					window.location.href="http://localhost:8080/main.html";
+				}else if (value1=="订单"){
+					window.location.href="http://localhost:8080/orders";
+				}else if (value1=="商品管理"){
+					window.location.href="http://localhost:8080/commodity";
+				}else if (value1=="员工管理"){
+					window.location.href="http://localhost:8080/emps";
+				}else if (value1=="报告"){
+					window.location.href="http://localhost:8080/AllReports";
+				}else if (value1=="整合"){
+					window.location.href="http://localhost:8080/IntegrationPage";
+				}else if (value1=="当月"){
+					window.location.href="http://localhost:8080/month";
+				}else if (value1=="上季度"){
+					window.location.href="http://localhost:8080/quarter";
+				}else if (value1=="社会参与"){
+					window.location.href="http://localhost:8080/Sociology";
+				}else if (value1=="活动"){
+					window.location.href="http://localhost:8080/activity";
+				}
+			}
+		})
+	});
+</script>
+
+	</body>
+
+</html>

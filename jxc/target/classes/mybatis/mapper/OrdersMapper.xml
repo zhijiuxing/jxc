@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxx.mapper.OrdersMapper">
+
+
+<select id="SelectOrder" resultMap="OrdersCustomerEmployee">
+    select orders.id,ordernumber,orders.tradename,number,money,time,state,
+           employee.id,lastName,employee.email,gender,employee.birth,
+           commodity.id,commodity.tradename,price,sell,commodity.birth,stock,
+           customer.id,name,age,telephone,customer.email,frequency
+    from orders,employee,commodity,customer
+    where orders.employee_id=employee.id and orders.commodity_id=commodity.id and orders.customer_id=customer.id
+
+</select>
+    <resultMap id="OrdersCustomerEmployee" type="Orders">
+        <id property="id" column="id"/>
+        <result property="ordernumber" column="ordernumber"/>
+        <result property="tradename" column="tradename"/>
+        <result property="number" column="number"/>
+        <result property="money" column="money"/>
+        <result property="time" column="time"/>
+        <result property="state" column="state"/>
+        <!--Employee-->
+       <collection property="employee" ofType="Employee">
+           <id property="id" column="id"/>
+           <result property="lastName" column="lastName"/>
+           <result property="email" column="email"/>
+           <result property="gender" column="gender"/>
+           <result property="birth" column="birth"/>
+       </collection>
+        <!--Commodity-->
+        <collection property="commodity" ofType="Commodity">
+            <id property="id" column="id"/>
+            <result property="tradename" column="tradename"/>
+            <result property="price" column="price"/>
+            <result property="sell" column="sell"/>
+            <result property="birth" column="birth"/>
+            <result property="stock" column="stock"/>
+        </collection>
+        <!--Customer-->
+        <collection property="customer" ofType="Customer">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="age" column="age"/>
+            <result property="telephone" column="telephone"/>
+            <result property="email" column="email"/>
+            <result property="frequency" column="frequency"/>
+        </collection>
+    </resultMap>
+
+
+    <!--Integer FrontXDayMoney(Date start,Date end);-->
+    <select id="FrontXDayMoney" resultType="Integer">
+        select sum(number) from orders where time between #{start} and #{end};
+    </select>
+</mapper>
